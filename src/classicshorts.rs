@@ -1,4 +1,3 @@
-
 extern crate scraper;
 extern crate reqwest;
 
@@ -6,7 +5,7 @@ use scraper::{ Html, Selector };
 use rand::prelude::*;
 use Story;
 
-pub fn get_rand_story<'a>() -> Story {
+pub fn get_rand_story() -> Story {
     let mut result = String::new();
     let base_url: String = String::from("http://www.classicshorts.com/abc/");
     let mut rng = thread_rng();
