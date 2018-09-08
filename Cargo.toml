@@ -1,0 +1,10 @@
+[package]
+name = "orpheus"
+version = "0.1.0"
+authors = ["NerdyPepper <nerdypepper@tuta.io>"]
+
+[dependencies]
+scraper   = "0.7.0"
+reqwest   = "0.8.6"
+rand      = "0.5.4"
+sciter-rs = "0.5.44"
