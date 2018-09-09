@@ -8,6 +8,7 @@ use sciter::dom::Element;
 use std::fmt;
 
 pub mod classicshorts;
+pub mod tomorrows365;
 
 pub struct Story {
     title: String,
@@ -24,5 +25,5 @@ impl fmt::Display for Story {
 } 
 
 fn main() {
-    println!("{}", classicshorts::get_rand_story());
+    println!("{}", tomorrows365::get_rand_story());
 }
