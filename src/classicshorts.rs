@@ -41,7 +41,7 @@ pub fn get_rand_story() -> Story {
     let story_doc = Html::parse_document(&story_response.text().unwrap());
 
     // get the story content
-    let story_para_selector = Selector::parse(r#"div[class=StoryPara]"#).unwrap();
+    let story_para_selector = Selector::parse("div.StoryPara").unwrap();
     let mut story = String::new();
     for div in story_doc.select(&story_para_selector) {
         // story.append(& mut div.text().map(|&x| x.to_string()).collect::<Vec<_>>());
