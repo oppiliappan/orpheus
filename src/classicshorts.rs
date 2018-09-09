@@ -37,14 +37,18 @@ pub fn get_rand_story() -> Story {
     result.push_str(story_title);
 
 
-    let mut story_response = reqwest::get(&format!("http://www.classicshorts.com/stories/{}.html", result)).unwrap();
+    let mut story_response = reqwest::get(
+        &format!("http://www.classicshorts.com/stories/{}.html", result))
+        .unwrap();
     let story_doc = Html::parse_document(&story_response.text().unwrap());
 
     // get the story content
     let story_para_selector = Selector::parse("div.StoryPara").unwrap();
     let mut story = String::new();
     for div in story_doc.select(&story_para_selector) {
-        story.push_str(& mut div.text().collect::<String>());
+        story.push_str(& mut div.
+                       text()
+                       .collect::<String>());
         story.push_str("\n");
     }
     // get the story title
@@ -53,16 +57,9 @@ pub fn get_rand_story() -> Story {
     for div in story_doc.select(&title_selector) {
         title.push_str(& mut div.text().collect::<String>());
     }
-    // get the story author
-    let author_selector = Selector::parse(r#"div[onClick=gotoSpecificBio\(\)]"#).unwrap();
-    let mut author = String::new();
-    for div in story_doc.select(&author_selector) {
-        author.push_str(& mut div.text().collect::<String>());
-    }
 
     Story {
         title: title,
-        author: author,
         content: story
     }
 }
