@@ -29,33 +29,25 @@ pub fn get_rand_story() -> Story {
     let story_document = Html::parse_document(&story_request.text().unwrap());
 
     // get the story content
-    let story_selector = Selector::parse(r#"div.sharedaddy.sd-sharing-enabled"#).unwrap();
     let mut story = String::new();
-    for elem in story_document.select(&story_selector) {
-        story.push_str( & mut elem
-                        .prev_sibling_element()
-                        .unwrap()
-                        .text()
-                        .collect::<String>() )
+    let content_div_selector = Selector::parse("div.entry-content").unwrap();
+    let content_para_selector = Selector::parse("p").unwrap();
+
+    let content_div = story_document.select(&content_div_selector).next().unwrap();
+    for para in content_div.select(&content_para_selector) {
+        story.push_str(& mut para.text().collect::<String>());
+        story.push_str("\n\n");
     }
 
     // get the story title
-    let title_selector = Selector::parse("h1.entry-title").unwrap();
     let mut title = String::new();
+    let title_selector = Selector::parse("h1.entry-title").unwrap();
     for elem in story_document.select(&title_selector) {
         title.push_str( & mut elem.text().collect::<String>() );
     }
 
-    // get author
-    let author_selector = Selector::parse("strong").unwrap();
-    let mut author = String::new();
-    for elem in story_document.select(&author_selector) {
-        author.push_str( & mut elem.text().collect::<String>() );
-    }
-
     Story {
         title: title,
-        author: author,
         content: story
     }
 }
