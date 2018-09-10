@@ -8,9 +8,11 @@ use self::selectors::Element;
 use Story;
 
 pub fn get_rand_story() -> Story {
-    let story_list_url = "https://365tomorrows.com/flashes-of-fiction/";
+    let mut rng = thread_rng();
+    let rand_int: usize = rng.gen_range(1, 256);
+    let story_list_url = format!("https://365tomorrows.com/flashes-of-fiction/page/{}", rand_int);
 
-    let mut response = reqwest::get(story_list_url).unwrap();
+    let mut response = reqwest::get(&story_list_url).unwrap();
     let document = Html::parse_document(&response.text().unwrap());
     let story_selector = Selector::parse("a.more-link").unwrap();
 
@@ -20,7 +22,6 @@ pub fn get_rand_story() -> Story {
         url_vec.push(url);
     }
     // choose a random story from the listing
-    let mut rng = thread_rng();
     let rand_int: usize = rng.gen_range(0, url_vec.len());
     let story_url = url_vec.get(rand_int).unwrap();
 
