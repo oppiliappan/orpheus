@@ -29,14 +29,14 @@ pub fn get_rand_story() -> Story {
     let story_document = Html::parse_document(&story_request.text().unwrap());
 
     // get the story content
-    let mut story = String::new();
+    let mut story: Vec<String> = vec![];
     let content_div_selector = Selector::parse("div.entry-content").unwrap();
     let content_para_selector = Selector::parse("p").unwrap();
 
     let content_div = story_document.select(&content_div_selector).next().unwrap();
     for para in content_div.select(&content_para_selector) {
-        story.push_str(& mut para.text().collect::<String>());
-        story.push_str("\n\n");
+        let para_text = para.text().collect::<String>();
+        story.push(para_text);
     }
 
     // get the story title
