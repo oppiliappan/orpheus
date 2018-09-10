@@ -44,12 +44,10 @@ pub fn get_rand_story() -> Story {
 
     // get the story content
     let story_para_selector = Selector::parse("div.StoryPara").unwrap();
-    let mut story = String::new();
+    let mut story = vec![];
     for div in story_doc.select(&story_para_selector) {
-        story.push_str(& mut div.
-                       text()
-                       .collect::<String>());
-        story.push_str("\n");
+        let div_text = div.text().collect::<String>();
+        story.push(div_text);
     }
     // get the story title
     let title_selector = Selector::parse(r#"div[onClick=gotoSpecificBib\(\)]"#).unwrap();
