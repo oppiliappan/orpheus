@@ -13,6 +13,7 @@ pub mod tomorrows365;
 pub struct Story {
     title: String,
     content: Vec<String>,
+    author: Option<String>
 }
 
 impl fmt::Display for Story {

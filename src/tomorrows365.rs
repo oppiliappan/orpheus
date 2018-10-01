@@ -25,7 +25,6 @@ pub fn get_rand_story() -> Story {
     let rand_int: usize = rng.gen_range(0, url_vec.len());
     let story_url = url_vec.get(rand_int).unwrap();
 
-
     let mut story_request = reqwest::get(*story_url).unwrap();
     let story_document = Html::parse_document(&story_request.text().unwrap());
 
@@ -49,6 +48,7 @@ pub fn get_rand_story() -> Story {
 
     Story {
         title: title,
-        content: story
+        content: story,
+        author: None
     }
 }
