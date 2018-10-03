@@ -9,6 +9,7 @@ use std::fmt;
 
 pub mod classicshorts;
 pub mod tomorrows365;
+pub mod eastoftheweb;
 
 pub struct Story {
     title: String,
@@ -27,26 +28,31 @@ fn main() {
     let mut rng = thread_rng();
     let rand_int: usize = rng.gen_range(0, 2);
     let story = match rand_int {
-        0 => classicshorts::get_rand_story(),
-        _ => tomorrows365::get_rand_story(),
+       0 => classicshorts::get_rand_story(),
+       1 => tomorrows365::get_rand_story(),
+       _ => eastoftheweb::get_rand_story(),
     };
-
 
     let mut frame = sciter::Window::new();
     frame.load_file("ui_templates/story.html");
     let root = Element::from_window(frame.get_hwnd()).unwrap();
+
     if let Some(mut ele) = root.find_first("#title").unwrap() {
-        match ele.set_text(&story.title) {
-            _ => {},
-        };
+        match ele.set_text(&story.title) { _ => {}, };
+    }
+
+    if let Some(mut ele) = root.find_first("#author").unwrap() {
+        if let Some(x) = &story.author {
+            match ele.set_text(x) { _ => {} };
+        } else {
+            match ele.detach() { _ => {} };
+        }
     }
 
     if let Some(mut ele) = root.find_first("#content").unwrap() {
         for para in story.content {
             let p = Element::with_text("p", &para).unwrap();
-            match ele.append(&p) {
-                _ => {},
-            };
+            match ele.append(&p) { _ => {}, };
         }
     }
 
