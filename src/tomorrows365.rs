@@ -21,6 +21,7 @@ pub fn get_rand_story() -> Story {
         let mut url = link.value().attr("href").unwrap();
         url_vec.push(url);
     }
+    println!("{:?}", url_vec);
     // choose a random story from the listing
     let rand_int: usize = rng.gen_range(0, url_vec.len());
     let story_url = url_vec.get(rand_int).unwrap();
@@ -34,7 +35,7 @@ pub fn get_rand_story() -> Story {
     let content_para_selector = Selector::parse("p").unwrap();
 
     let content_div = story_document.select(&content_div_selector).next().unwrap();
-    for para in content_div.select(&content_para_selector) {
+    for para in content_div.select(&content_para_selector).skip(1) {
         let para_text = para.text().collect::<String>();
         story.push(para_text);
     }
@@ -46,9 +47,17 @@ pub fn get_rand_story() -> Story {
         title.push_str( & mut elem.text().collect::<String>() );
     }
 
+    // get the author 
+    let mut author = String::new();
+    for para in content_div.select(&content_para_selector).next() {
+        let auth_text = para.text().collect::<String>();
+        author.push_str(&auth_text);
+    }
+
+
     Story {
         title: title,
         content: story,
-        author: None
+        author: Some(author)
     }
 }
