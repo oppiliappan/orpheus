@@ -55,10 +55,16 @@ pub fn get_rand_story() -> Story {
     for div in story_doc.select(&title_selector) {
         title.push_str(& mut div.text().collect::<String>());
     }
+    // get the story author
+    let author_selector = Selector::parse(r#"div[onClick=gotoSpecificBio\(\)]"#).unwrap();
+    let mut author = String::new();
+    for div in story_doc.select(&author_selector) {
+        author.push_str(& mut div.text().collect::<String>());
+    }
 
     Story {
         title: title,
         content: story,
-        author: None
+        author: Some(author)
     }
 }
